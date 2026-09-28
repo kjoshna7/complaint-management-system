@@ -1,0 +1,500 @@
+/* ===============================
+   GLOBAL RESET
+================================ */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI",Tahoma,sans-serif;
+}
+
+body{
+min-height:100vh;
+background:#f4f6fb;
+padding-top:70px; /* prevents navbar overlap */
+}
+
+
+/* ===============================
+   WELCOME PAGE BACKGROUND
+================================ */
+
+.welcome-body{
+min-height:100vh;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+
+/* ===============================
+   WELCOME WRAPPER
+================================ */
+
+.welcome-wrapper{
+width:100%;
+max-width:1100px;
+padding:40px 20px;
+text-align:center;
+}
+
+
+/* ===============================
+   WELCOME CARD
+================================ */
+
+.welcome-card{
+padding:60px 40px;
+border-radius:25px;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,0.2);
+box-shadow:0 40px 80px rgba(0,0,0,0.4);
+}
+
+
+/* ===============================
+   LOGO
+================================ */
+
+.welcome-logo{
+width:110px;
+height:110px;
+margin:auto;
+margin-bottom:20px;
+border-radius:50%;
+background:linear-gradient(135deg,#ff9800,#ff5722);
+color:white;
+font-size:50px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+
+/* ===============================
+   TEXT
+================================ */
+
+.welcome-card h1{
+font-size:44px;
+color:white;
+margin-bottom:10px;
+}
+
+.welcome-tagline{
+font-size:18px;
+color:rgba(255,255,255,0.85);
+margin-bottom:40px;
+}
+
+
+/* ===============================
+   MAIN BUTTONS
+================================ */
+
+.welcome-actions{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.welcome-btn{
+padding:14px 34px;
+border-radius:40px;
+text-decoration:none;
+font-weight:600;
+background:white;
+color:#333;
+transition:0.3s;
+}
+
+.welcome-btn:hover{
+transform:translateY(-5px);
+}
+
+.welcome-btn.primary{
+background:linear-gradient(135deg,#ff9800,#ff5722);
+color:white;
+}
+
+.welcome-btn.danger{
+background:linear-gradient(135deg,#ff5252,#e53935);
+color:white;
+}
+
+
+/* ===============================
+   AUTH BUTTONS
+================================ */
+
+.auth-buttons{
+margin-top:30px;
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+}
+
+.auth-btn{
+padding:15px 35px;
+border-radius:40px;
+text-decoration:none;
+font-weight:600;
+font-size:16px;
+color:white !important;
+display:inline-block;
+transition:0.3s;
+box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+
+.login-btn{
+background:linear-gradient(135deg,#2196F3,#21CBF3);
+}
+
+.register-btn{
+background:linear-gradient(135deg,#00c853,#69f0ae);
+}
+
+.admin-btn{
+background:linear-gradient(135deg,#ff416c,#ff4b2b);
+}
+
+.auth-btn:hover{
+transform:translateY(-4px) scale(1.05);
+box-shadow:0 12px 25px rgba(0,0,0,0.4);
+}
+
+
+/* ===============================
+   FEATURES
+================================ */
+
+.welcome-features{
+margin-top:40px;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.feature-box{
+padding:14px 26px;
+border-radius:30px;
+font-size:14px;
+font-weight:500;
+color:white;
+background:rgba(255,255,255,0.18);
+border:1px solid rgba(255,255,255,0.25);
+}
+
+
+/* ===============================
+   DASHBOARD
+================================ */
+
+.dashboard-container{
+max-width:1200px;
+margin:auto;
+padding:30px;
+}
+
+.dashboard-title{
+margin-bottom:30px;
+}
+
+.dashboard-cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+margin-bottom:40px;
+}
+
+.card{
+flex:1;
+min-width:220px;
+background:white;
+padding:25px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 6px 15px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card h3{
+font-size:34px;
+margin-bottom:8px;
+color:#333;
+}
+
+.card p{
+color:#555;
+font-size:15px;
+}
+
+.pending{
+border-left:6px solid orange;
+}
+
+.resolved{
+border-left:6px solid green;
+}
+
+.priority{
+border-left:6px solid red;
+}
+
+
+/* ===============================
+   COMPLAINT TABLE
+================================ */
+
+.recent-title{
+margin-bottom:15px;
+}
+
+.complaint-table{
+width:100%;
+border-collapse:collapse;
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
+margin-top:10px;
+}
+
+.complaint-table th{
+background:#6a11cb;
+color:white;
+padding:14px;
+text-align:left;
+font-size:14px;
+}
+
+.complaint-table td{
+padding:14px;
+border-bottom:1px solid #eee;
+font-size:14px;
+}
+
+.complaint-table tr:hover{
+background:#f7f7f7;
+}
+
+
+/* ===============================
+   NAVBAR
+================================ */
+
+.navbar{
+width:100%;
+background:linear-gradient(90deg,#3f51b5,#e91e63);
+padding:15px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:fixed;
+top:0;
+left:0;
+z-index:1000;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+margin-right:20px;
+font-weight:500;
+font-size:15px;
+transition:0.3s;
+}
+
+.navbar a:hover{
+opacity:0.8;
+}
+
+.navbar-left{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.navbar-right{
+display:flex;
+align-items:center;
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width:768px){
+
+.dashboard-cards{
+flex-direction:column;
+}
+
+.navbar{
+padding:15px 20px;
+}
+
+.navbar a{
+margin-right:12px;
+font-size:14px;
+}
+
+}
+
+.status-pending{
+color:#ff9800;
+font-weight:600;
+}
+
+.status-inprogress{
+color:#1976d2;
+font-weight:600;
+}
+
+.status-resolved{
+color:#2e7d32;
+font-weight:600;
+}
+
+/* PUBLIC EYE PAGE */
+
+.public-container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.public-title{
+margin-bottom:25px;
+}
+
+.public-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+}
+
+.complaint-card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.complaint-card:hover{
+transform:translateY(-5px);
+}
+
+/* STATUS COLORS */
+
+.status-pending{
+color:#ff9800;
+font-weight:600;
+}
+
+.status-resolved{
+color:#2e7d32;
+font-weight:600;
+}
+
+.map-title{
+text-align:center;
+margin-bottom:20px;
+}
+
+#map{
+height:500px;
+width:100%;
+border-radius:10px;
+box-shadow:0 6px 20px rgba(0,0,0,0.2);
+}
+
+.floating-back{
+
+position:fixed;
+
+top:20px;
+
+left:20px;
+
+background:#1e3a8a;
+
+color:white;
+
+padding:8px 16px;
+
+border-radius:25px;
+
+text-decoration:none;
+
+font-weight:600;
+
+box-shadow:0 6px 15px rgba(0,0,0,0.3);
+
+z-index:2000;
+
+transition:0.3s;
+
+}
+
+.floating-back:hover{
+
+background:#ec4899;
+
+transform:scale(1.05);
+
+}
+
+.badge {
+    background-color: red;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 50%;
+    font-size: 12px;
+    margin-left: 5px;
+}
+.notifications-box {
+    margin-top: 20px;
+}
+
+.notification-item {
+    background: #f5f5f5;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+.mark-read-btn{
+    display:inline-block;
+    margin-top:5px;
+    background:#4CAF50;
+    color:white;
+    padding:4px 10px;
+    border-radius:5px;
+    text-decoration:none;
+    font-size:12px;
+}
+
+.read-label{
+    color:gray;
+    font-size:12px;
+}
+
+.chart-box{
+width:500px;
+height:300px;
+margin-bottom:30px;
+}

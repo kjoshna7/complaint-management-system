@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Logout - SpeakUp</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg,#0f2d33,#1e4a53);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    width:400px;
+    background:#5f747a;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+.logo{
+    background:#ff7a1a;
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+    font-size:35px;
+}
+
+h1{
+    color:white;
+    margin-top:15px;
+}
+
+.message{
+    color:#e6e6e6;
+    margin:20px 0;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:25px;
+    background:#ff7a1a;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ff6a00;
+}
+
+.footer{
+    margin-top:15px;
+    color:white;
+}
+
+.footer a{
+    color:white;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">📣</div>
+
+<h1>SpeakUp</h1>
+
+<p class="message">You have been logged out successfully.</p>
+
+<a href="{% url 'login' %}">
+<button>Login Again</button>
+</a>
+
+<div class="footer">
+Return to <a href="{% url 'home' %}">Home</a>
+</div>
+
+</div>
+
+</body>
+</html>
+

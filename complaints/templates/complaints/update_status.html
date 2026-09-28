@@ -1,0 +1,19 @@
+{% load static %}
+
+<h2>Update Complaint Status</h2>
+
+<p><b>Category:</b> {{ complaint.category }}</p>
+<p><b>Description:</b> {{ complaint.description }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <select name="status">
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+    </select><br><br>
+
+    <button type="submit">Update</button>
+</form>
+
+<a href="{% url 'admin_dashboard' %}">Back</a>

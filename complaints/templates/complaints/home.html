@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>SpeakUp | Welcome</title>
+
+<link rel="stylesheet" href="{% static 'complaints/style.css' %}">
+
+<style>
+
+.message-box{
+background:#d4edda;
+color:#155724;
+padding:10px;
+border-radius:8px;
+margin-bottom:15px;
+font-weight:600;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body class="welcome-body">
+
+{% if user.is_authenticated %}
+{% include 'complaints/navbar.html' %}
+{% endif %}
+
+<div class="welcome-wrapper">
+
+<div class="welcome-card animate-fade">
+
+<!-- MESSAGE DISPLAY -->
+{% if messages %}
+{% for message in messages %}
+
+<div class="message-box">
+{{ message }}
+</div>
+
+{% endfor %}
+{% endif %}
+
+<!-- LOGO -->
+<div class="welcome-logo">
+🗣️
+</div>
+
+<!-- TITLE -->
+<h1>SpeakUp</h1>
+
+<p class="welcome-tagline">
+A Smart Online Complaint Management System
+</p>
+
+
+{% if user.is_authenticated %}
+
+<div class="welcome-actions">
+
+<a href="{% url 'submit_complaint' %}" class="welcome-btn primary">
+Submit Complaint
+</a>
+
+<a href="{% url 'my_complaints' %}" class="welcome-btn">
+My Complaints
+</a>
+
+<a href="{% url 'logout' %}" class="welcome-btn danger">
+Logout
+</a>
+
+</div>
+
+{% else %}
+
+<div class="auth-buttons">
+
+<a href="{% url 'login' %}" class="auth-btn login-btn">
+🔐 User Login
+</a>
+
+<a href="{% url 'register' %}" class="auth-btn register-btn">
+📝 Register
+</a>
+
+<a href="/admin/" class="auth-btn admin-btn">
+⚙️ Admin Login
+</a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</body>
+</html>

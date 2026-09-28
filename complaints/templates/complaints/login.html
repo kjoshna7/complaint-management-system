@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SpeakUp Login</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#0f2d33,#1e4a53);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+position:fixed;
+top:20px;
+left:20px;
+background:#ffffff20;
+color:white;
+padding:8px 16px;
+border-radius:20px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.back-btn:hover{
+background:#ffffff40;
+transform:scale(1.05);
+}
+
+/* LOGIN CARD */
+
+.container{
+width:420px;
+background:#5f747a;
+padding:40px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+.logo{
+background:#ff7a1a;
+width:80px;
+height:80px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin:auto;
+font-size:35px;
+}
+
+.message-box{
+margin-bottom:15px;
+}
+
+.message{
+padding:10px;
+border-radius:8px;
+font-weight:600;
+}
+
+.message.success{
+background:#d4edda;
+color:#155724;
+border:1px solid #c3e6cb;
+}
+
+h1{
+color:white;
+margin-top:15px;
+}
+
+.subtitle{
+color:#e6e6e6;
+margin-bottom:25px;
+}
+
+.error{
+background:#ff4d4d;
+color:white;
+padding:8px;
+border-radius:8px;
+margin-bottom:15px;
+font-size:14px;
+}
+
+label{
+display:block;
+text-align:left;
+color:white;
+margin-top:10px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:6px;
+border-radius:8px;
+border:none;
+background:#e0e0e0;
+}
+
+.remember-option{
+display:flex;
+align-items:center;
+gap:8px;
+margin-top:12px;
+}
+
+.remember-option input{
+width:auto;
+margin:0;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:20px;
+border:none;
+border-radius:25px;
+background:#ff7a1a;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff6a00;
+}
+
+.forgot{
+text-align:right;
+margin-top:5px;
+}
+
+.forgot a{
+color:#ffffff;
+font-size:13px;
+text-decoration:none;
+}
+
+.footer{
+margin-top:15px;
+color:white;
+}
+
+.footer a{
+color:#fff;
+font-weight:bold;
+text-decoration:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- BACK BUTTON -->
+<a href="javascript:history.back()" class="back-btn">
+⬅ Back
+</a>
+
+<div class="container">
+
+<div class="logo">📣</div>
+
+<h1>SpeakUp</h1>
+<p class="subtitle">Login to report civic issues</p>
+
+{% if error %}
+<div class="error">
+{{ error }}
+</div>
+{% endif %}
+
+{% if messages %}
+<div class="message-box">
+{% for message in messages %}
+<div class="message {{ message.tags }}">
+{{ message }}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+<form method="POST">
+{% csrf_token %}
+
+<label>Email Address / Mobile Number</label>
+<input type="text" name="identifier" required autocomplete="username">
+
+<label>Password</label>
+<input type="password" name="password" required>
+
+<div class="forgot">
+<a href="{% url 'forgot_password' %}">Forgot Password?</a>
+</div>
+
+<label class="remember-option">
+<input type="checkbox" name="remember_me">
+Remember Me
+</label>
+
+<button type="submit">Login</button>
+
+</form>
+
+<div class="footer">
+Don't have an account?
+<a href="{% url 'register' %}">Register</a>
+</div>
+
+</div>
+
+</body>
+</html>

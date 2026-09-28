@@ -1,0 +1,72 @@
+{% extends 'complaints/base.html' %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+<h2 class="dashboard-title">Complaint Dashboard</h2>
+
+<!-- DASHBOARD CARDS -->
+
+<div class="dashboard-cards">
+
+    <div class="card">
+        <h3>{{ total_complaints }}</h3>
+        <p>Total Complaints</p>
+    </div>
+
+    <div class="card pending">
+        <h3>{{ pending_count }}</h3>
+        <p>Pending</p>
+    </div>
+
+    <div class="card resolved">
+        <h3>{{ resolved_count }}</h3>
+        <p>Resolved</p>
+    </div>
+
+    <div class="card priority">
+        <h3>{{ high_priority }}</h3>
+        <p>High Priority</p>
+    </div>
+
+</div>
+
+
+<!-- RECENT COMPLAINTS -->
+
+<h2 class="recent-title">Recent Complaints</h2>
+
+<table class="complaint-table">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Category</th>
+<th>Status</th>
+<th>Priority</th>
+<th>Date</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for complaint in complaints %}
+
+<tr>
+<td>#{{ complaint.id }}</td>
+<td>{{ complaint.category }}</td>
+<td>{{ complaint.status }}</td>
+<td>{{ complaint.priority }}</td>
+<td>{{ complaint.created_at|date:"M d, Y" }}</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

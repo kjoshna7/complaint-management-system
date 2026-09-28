@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Profile</title>
+
+<link rel="stylesheet" href="{% static 'complaints/style.css' %}">
+
+<style>
+
+body{
+background:linear-gradient(135deg,#6a11cb,#2575fc);
+font-family:"Segoe UI";
+margin:0;
+}
+
+.container{
+max-width:700px;
+margin:60px auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 15px 35px rgba(0,0,0,0.2);
+}
+
+h2{
+text-align:center;
+color:#2575fc;
+}
+
+.section{
+margin-top:30px;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+border-bottom:1px solid #eee;
+}
+
+label{
+font-weight:600;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-top:5px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+.btn{
+margin-top:10px;
+padding:8px 18px;
+background:#28a745;
+color:white;
+border:none;
+border-radius:20px;
+cursor:pointer;
+}
+
+.profile-success{
+margin:12px 0;
+padding:10px 12px;
+border-radius:8px;
+background:#d4edda;
+color:#155724;
+font-weight:600;
+}
+
+.logout-btn{
+background:#dc3545;
+color:white;
+padding:10px 20px;
+border-radius:20px;
+text-decoration:none;
+display:inline-block;
+margin-top:20px;
+}
+
+.complaint-card{
+background:#f5f7ff;
+padding:10px;
+border-radius:10px;
+margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+{% include 'complaints/navbar.html' %}
+
+<div class="container">
+
+<h2>My Profile</h2>
+
+<!-- Edit Profile -->
+<div class="section">
+
+<h3>Edit Profile</h3>
+
+{% if profile_updated %}
+<div class="profile-success">Profile updated successfully.</div>
+{% endif %}
+
+<form method="POST">
+{% csrf_token %}
+
+<label>Username</label>
+<input type="text" name="username" value="{{ user.username }}">
+
+<button type="submit" class="btn">
+Update Name
+</button>
+
+</form>
+
+</div>
+
+
+<!-- Account Information -->
+<div class="section">
+
+<h3>Account Information</h3>
+
+<div class="row">
+<span>Username</span>
+<span>{{ user.username }}</span>
+</div>
+
+<div class="row">
+<span>Email</span>
+<span>{{ user.email }}</span>
+</div>
+
+<div class="row">
+<span>Account Created</span>
+<span>{{ user.date_joined|date:"d M Y" }}</span>
+</div>
+
+</div>
+
+
+<!-- Recent Complaints -->
+<div class="section">
+
+<h3>Recent Complaints</h3>
+
+{% for complaint in recent_complaints %}
+
+<div class="complaint-card">
+
+<strong>{{ complaint.category }}</strong><br>
+
+{{ complaint.description|truncatechars:80 }}<br>
+
+Status: {{ complaint.status }}
+
+</div>
+
+{% empty %}
+
+<p>No complaints submitted yet.</p>
+
+{% endfor %}
+
+</div>
+
+
+<!-- Logout Button -->
+<div style="text-align:center">
+
+<a href="{% url 'logout' %}" class="logout-btn">
+Logout
+</a>
+
+</div>
+
+</div>
+
+</body>
+</html>

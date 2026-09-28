@@ -1,0 +1,20 @@
+<h2>Complaint Reports</h2>
+
+<table border="1">
+<tr>
+    <th>ID</th>
+    <th>User</th>
+    <th>Category</th>
+    <th>Status</th>
+</tr>
+
+{% for complaint in complaints %}
+<tr>
+    <td>{{ complaint.id }}</td>
+    <td>{{ complaint.user }}</td>
+    <td>{{ complaint.category }}</td>
+    <td>{{ complaint.status }}</td>
+</tr>
+{% endfor %}
+
+</table>

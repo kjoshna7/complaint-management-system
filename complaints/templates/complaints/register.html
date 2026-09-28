@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>SpeakUp Register</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(to right,#0f2027,#203a43,#2c5364);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* CARD */
+
+.register-card{
+background:#546a72;
+padding:40px;
+border-radius:20px;
+width:400px;
+text-align:center;
+box-shadow:0px 10px 30px rgba(0,0,0,0.4);
+color:white;
+}
+
+.logo{
+background:#ff7a18;
+width:80px;
+height:80px;
+border-radius:50%;
+margin:auto;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:30px;
+margin-bottom:10px;
+}
+
+h1{
+margin:10px 0;
+}
+
+.subtitle{
+font-size:14px;
+color:#dcdcdc;
+margin-bottom:25px;
+}
+
+form{
+text-align:left;
+}
+
+label{
+font-size:14px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border-radius:8px;
+border:none;
+}
+
+.error{
+color:#ffb3b3;
+font-size:12px;
+margin-top:-10px;
+margin-bottom:10px;
+}
+
+.register-btn{
+width:100%;
+padding:12px;
+background:#ff7a18;
+border:none;
+border-radius:25px;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+.register-btn:hover{
+background:#ff8c2a;
+}
+
+.login-link{
+text-align:center;
+margin-top:15px;
+}
+
+.login-link a{
+color:#ffffff;
+text-decoration:none;
+font-weight:bold;
+}
+
+</style>
+
+<script>
+
+function validateForm(){
+
+let email = document.getElementById("email").value;
+let password = document.getElementById("password").value;
+let confirm = document.getElementById("confirm_password").value;
+
+	if(!email.includes("@")){
+	alert("Please enter a valid email address");
+return false;
+}
+
+if(password.length < 8){
+alert("Password must be at least 8 characters long");
+return false;
+}
+
+if(password !== confirm){
+alert("Passwords do not match");
+return false;
+}
+
+return true;
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+
+<div class="register-card">
+
+<div class="logo">📢</div>
+
+<h1>SpeakUp</h1>
+<p class="subtitle">Create your account to report civic issues</p>
+
+<form method="POST" onsubmit="return validateForm()">
+{% csrf_token %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="error">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+<label>Full Name</label>
+<input type="text" name="full_name" required autocomplete="name">
+
+<label>Email Address</label>
+<input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
+
+<label>Mobile Number</label>
+<input type="tel" name="mobile_number" required placeholder="10-digit mobile number" pattern="[0-9+() -]{10,20}" autocomplete="tel">
+
+<label>Password</label>
+<input type="password" id="password" name="password" required minlength="8">
+
+<label>Confirm Password</label>
+<input type="password" id="confirm_password" name="confirm_password" required minlength="8">
+
+<button class="register-btn">Register</button>
+
+</form>
+
+<div class="login-link">
+Already have an account? <a href="{% url 'login' %}">Login</a>
+</div>
+
+</div>
+
+</body>
+</html>

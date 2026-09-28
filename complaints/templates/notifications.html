@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            background:#f4f6f9;
+            padding:40px;
+        }
+
+        h2{
+            margin-bottom:20px;
+        }
+        
+        .navigation{
+            display:flex;
+            gap:10px;
+            margin-bottom:20px;
+        }
+        
+        .back-btn,
+        .dashboard-btn{
+            display:inline-block;
+            padding:8px 14px;
+            color:white;
+            text-decoration:none;
+            border-radius:6px;
+            font-size:14px;
+        }
+        
+        .back-btn{
+            background:#6c757d;
+        }
+        
+        .dashboard-btn{
+            background:#007bff;
+        }
+
+        .notification{
+            background:white;
+            padding:15px;
+            margin-bottom:15px;
+            border-radius:8px;
+            border-left:5px solid #007bff;
+        }
+
+        .unread{
+            background:#eaf3ff;
+            border-left:5px solid #ff9800;
+        }
+
+        .time{
+            color:gray;
+            font-size:12px;
+        }
+
+        .read-btn{
+            display:inline-block;
+            margin-top:8px;
+            padding:5px 10px;
+            background:#28a745;
+            color:white;
+            text-decoration:none;
+            border-radius:5px;
+            font-size:13px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h2>🔔 Your Notifications</h2>
+<div class="navigation">
+    <a class="back-btn" href="javascript:history.back();">&larr; Back</a>
+    <a class="dashboard-btn" href="{% url 'dashboard' %}">Dashboard</a>
+</div>
+
+{% if notifications %}
+
+    {% for n in notifications %}
+
+    <div class="notification {% if not n.is_read %}unread{% endif %}">
+
+        <p>{{ n.message }}</p>
+
+        <p class="time">{{ n.created_at }}</p>
+
+        {% if not n.is_read %}
+        <a class="read-btn" href="{% url 'mark_notification_read' n.id %}">
+            Mark as Read
+        </a>
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+<p>No notifications available.</p>
+
+{% endif %}
+
+</body>
+</html>

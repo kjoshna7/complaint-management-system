@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Complaints</title>
+    <link rel="stylesheet" href="{% static 'complaints/style.css' %}">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            font-family: "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 60px auto;
+            background: #fff;
+            padding: 30px 35px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2575fc;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .complaint-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .complaint-card {
+            background: #f9fbff;
+            border-radius: 14px;
+            padding: 18px 20px;
+            border: 1px solid #e3e9f5;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .complaint-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .complaint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .complaint-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status.in\ progress {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status.resolved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        p {
+            font-size: 14px;
+            color: #444;
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .date {
+            font-size: 12px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        .actions {
+            margin-top: 12px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-view {
+            display: inline-block;
+            padding: 7px 16px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-edit {
+            display: inline-block;
+            padding: 7px 16px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-view:hover,
+        .btn-edit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'complaints/navbar.html' %}
+
+<div class="container">
+    <h2>My Complaints</h2>
+
+    {% if complaints %}
+        <div class="complaint-list">
+
+            {% for complaint in complaints %}
+            <div class="complaint-card">
+
+                <div class="complaint-header">
+                    <h3>{{ complaint.category }}</h3>
+
+                    <span class="status {{ complaint.status|lower }}">
+                        {{ complaint.status }}
+                    </span>
+                </div>
+
+                <p><strong>Complaint ID:</strong> #{{ complaint.id }}</p>
+
+                <p>
+                    <strong>Description:</strong><br>
+                    {{ complaint.description|truncatechars:120 }}
+                </p>
+
+                <p>
+                    <strong>Location:</strong><br>
+                    {{ complaint.address }}, {{ complaint.city }},
+                    {{ complaint.state }} - {{ complaint.zipcode }}
+                </p>
+
+                <p><strong>Priority:</strong> {{ complaint.priority }}</p>
+
+                <p class="date">
+                    Submitted on {{ complaint.created_at|date:"d M Y, h:i A" }}
+                </p>
+
+                <div class="actions">
+
+                    <!-- View Complaint -->
+                    <a href="{% url 'complaint_detail' complaint.id %}" class="btn-view">
+                        View
+                    </a>
+
+                    <!-- Edit Complaint -->
+                    <a href="{% url 'edit_complaint' complaint.id %}" class="btn-edit">
+                        Edit
+                    </a>
+
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <p style="text-align:center; font-size:16px; color:#555;">
+            No complaints submitted yet.
+        </p>
+    {% endif %}
+</div>
+
+</body>
+</html>

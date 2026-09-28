@@ -1,0 +1,73 @@
+{% extends 'complaints/base.html' %}
+
+{% block content %}
+
+<style>
+.public-container .status-pending,
+.public-container .status-inprogress,
+.public-container .status-resolved {
+	display: inline-block;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-weight: 700;
+}
+
+.public-container .status-pending {
+	background: #fef3c7;
+	color: #b45309 !important;
+}
+
+.public-container .status-inprogress {
+	background: #dbeafe;
+	color: #1d4ed8 !important;
+}
+
+.public-container .status-resolved {
+	background: #dcfce7;
+	color: #15803d !important;
+}
+</style>
+
+<div class="public-container">
+
+<h2 class="public-title">👁 Public Eye – Community Complaints</h2>
+
+{% if complaints %}
+
+<div class="public-grid">
+
+{% for complaint in complaints %}
+
+<div class="complaint-card">
+
+<p><strong>Category:</strong> {{ complaint.category }}</p>
+
+<p><strong>Description:</strong> {{ complaint.description }}</p>
+
+<p><strong>Location:</strong> {{ complaint.city }}, {{ complaint.state }}</p>
+
+<p><strong>Status:</strong>
+<span class="status-{{ complaint.status|lower|cut:' ' }}">
+{{ complaint.status }}
+</span>
+</p>
+
+<p><strong>Priority:</strong> {{ complaint.priority }}</p>
+
+<p><strong>Date:</strong> {{ complaint.created_at|date:"M d, Y" }}</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<p>No community complaints available.</p>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

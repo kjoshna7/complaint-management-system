@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SpeakUp</title>
+
+<link rel="stylesheet" href="{% static 'complaints/style.css' %}">
+
+<style>
+
+body{
+font-family:"Segoe UI",sans-serif;
+margin:0;
+background:#f4f6fb;
+}
+
+/* Main page container */
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:90px 30px 40px 30px;
+}
+
+/* BACK BUTTON */
+
+.back-button{
+
+position:fixed;
+
+top:85px;
+
+left:20px;
+
+background:#1e3a8a;
+
+color:white;
+
+padding:8px 16px;
+
+border-radius:25px;
+
+text-decoration:none;
+
+font-weight:600;
+
+box-shadow:0 6px 15px rgba(0,0,0,0.3);
+
+z-index:2000;
+
+transition:0.3s;
+
+}
+
+.back-button:hover{
+
+background:#ec4899;
+
+transform:scale(1.05);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+{% include 'complaints/navbar.html' %}
+
+
+
+<!-- PAGE CONTENT -->
+
+<div class="container">
+
+{% block content %}
+{% endblock %}
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complaint Details</title>
+
+    <link rel="stylesheet" href="{% static 'complaints/style.css' %}">
+
+    <!-- Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDatklB8NhQBBRkABXSh0QNklvvVNT5ZaM&callback=initMap" async defer></script>
+
+<style>
+
+body {
+    background: linear-gradient(135deg,#6a11cb,#2575fc);
+    font-family: "Segoe UI", sans-serif;
+    margin:0;
+}
+
+.container {
+    max-width:800px;
+    margin:70px auto;
+    background:#ffffff;
+    padding:35px 40px;
+    border-radius:18px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.25);
+}
+
+h2 {
+    text-align:center;
+    color:#2575fc;
+    margin-bottom:25px;
+}
+
+.detail-row {
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid #eee;
+}
+
+.detail-row strong {
+    min-width:130px;
+}
+
+.detail-value {
+    flex:1;
+    color:#555;
+}
+
+.badge {
+    padding:5px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.priority-low {
+    background:#d4edda;
+    color:#155724;
+}
+
+.priority-medium {
+    background:#fff3cd;
+    color:#856404;
+}
+
+.priority-high {
+    background:#f8d7da;
+    color:#721c24;
+}
+
+.status-pending {
+    background:#fff3cd;
+    color:#856404;
+}
+
+.status-inprogress {
+    background:#cce5ff;
+    color:#004085;
+}
+
+.status-resolved {
+    background:#d4edda;
+    color:#155724;
+}
+
+#map {
+    width:100%;
+    height:350px;
+    margin-top:20px;
+    border-radius:12px;
+}
+
+.btn-group{
+    margin-top:25px;
+    display:flex;
+    gap:15px;
+}
+
+.btn{
+    padding:10px 22px;
+    border-radius:22px;
+    text-decoration:none;
+    font-weight:600;
+    color:white;
+}
+
+.btn-back{
+    background:linear-gradient(135deg,#2575fc,#6a11cb);
+}
+
+.btn-edit{
+    background:linear-gradient(135deg,#28a745,#218838);
+}
+
+</style>
+</head>
+
+<body>
+
+{% include 'complaints/navbar.html' %}
+
+<div class="container">
+
+<h2>Complaint Details</h2>
+
+<div class="detail-row">
+<strong>Complaint ID:</strong>
+<span class="detail-value">#{{ complaint.id }}</span>
+</div>
+
+<div class="detail-row">
+<strong>Category:</strong>
+<span class="detail-value">{{ complaint.category }}</span>
+</div>
+
+<div class="detail-row">
+<strong>Description:</strong>
+<span class="detail-value">{{ complaint.description }}</span>
+</div>
+
+<div class="detail-row">
+<strong>Address:</strong>
+<span class="detail-value">
+{{ complaint.address }}, {{ complaint.city }}, {{ complaint.state }} - {{ complaint.zipcode }}
+</span>
+</div>
+
+<div class="detail-row">
+<strong>Priority:</strong>
+<span class="badge priority-{{ complaint.priority|lower }}">
+{{ complaint.priority }}
+</span>
+</div>
+
+<div class="detail-row">
+<strong>Status:</strong>
+<span class="badge status-{{ complaint.status|lower|cut:' ' }}">
+{{ complaint.status }}
+</span>
+</div>
+
+{% if complaint.image %}
+<div class="detail-row">
+<strong>Image:</strong>
+<span class="detail-value">
+<img src="{{ complaint.image.url }}" width="200" style="border-radius:10px;">
+</span>
+</div>
+{% endif %}
+
+{% if complaint.latitude and complaint.longitude %}
+<div id="map"></div>
+{% endif %}
+
+<div class="btn-group">
+
+<a href="{% url 'my_complaints' %}" class="btn btn-back">
+← Back to My Complaints
+</a>
+
+<a href="{% url 'edit_complaint' complaint.id %}" class="btn btn-edit">
+✏ Edit Complaint
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function initMap(){
+
+    var lat = parseFloat("{{ complaint.latitude|default:'0' }}");
+    var lng = parseFloat("{{ complaint.longitude|default:'0' }}");
+
+    if(!lat || !lng){
+        return;
+    }
+
+    var location = {lat:lat, lng:lng};
+
+    var map = new google.maps.Map(document.getElementById("map"),{
+        zoom:15,
+        center:location
+    });
+
+    new google.maps.Marker({
+        position:location,
+        map:map,
+        title:"Complaint Location"
+    });
+
+}
+
+</script>
+
+</body>
+</html>

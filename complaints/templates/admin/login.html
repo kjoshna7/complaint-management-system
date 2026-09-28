@@ -1,0 +1,93 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<style>
+
+body{
+background:linear-gradient(135deg,#0f2d33,#1e4a53);
+font-family:Arial, Helvetica, sans-serif;
+}
+
+.login-container{
+width:420px;
+margin:80px auto;
+background:#5f747a;
+padding:40px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
+color:white;
+}
+
+.logo{
+background:#ff7a1a;
+width:80px;
+height:80px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+margin:auto;
+font-size:35px;
+}
+
+h1{
+margin-top:15px;
+}
+
+label{
+display:block;
+text-align:left;
+margin-top:15px;
+}
+
+input{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:none;
+margin-top:5px;
+background:#e0e0e0;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:20px;
+border:none;
+border-radius:25px;
+background:#ff7a1a;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff6a00;
+}
+
+</style>
+
+<div class="login-container">
+
+<div class="logo">⚙️</div>
+
+<h1>SpeakUp Admin</h1>
+
+<form method="post" id="login-form">
+{% csrf_token %}
+
+<label>Username</label>
+{{ form.username }}
+
+<label>Password</label>
+{{ form.password }}
+
+<button type="submit">Admin Login</button>
+
+</form>
+
+</div>
+
+{% endblock %}

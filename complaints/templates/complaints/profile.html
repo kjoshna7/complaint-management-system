@@ -70,6 +70,14 @@ color:#155724;
 font-weight:600;
 }
 
+.profile-error{
+margin:12px 0;
+padding:10px 12px;
+border-radius:8px;
+background:#f8d7da;
+color:#721c24;
+}
+
 .logout-btn{
 background:#dc3545;
 color:white;
@@ -107,15 +115,21 @@ margin-top:10px;
 {% if profile_updated %}
 <div class="profile-success">Profile updated successfully.</div>
 {% endif %}
+{% for error in profile_errors %}
+<div class="profile-error">{{ error }}</div>
+{% endfor %}
 
 <form method="POST">
 {% csrf_token %}
 
 <label>Username</label>
-<input type="text" name="username" value="{{ user.username }}">
+<input type="text" name="username" value="{{ form_username }}" required maxlength="150">
+
+<label>Email Address</label>
+<input type="email" name="email" value="{{ form_email }}" required maxlength="150" autocomplete="email">
 
 <button type="submit" class="btn">
-Update Name
+Update Profile
 </button>
 
 </form>

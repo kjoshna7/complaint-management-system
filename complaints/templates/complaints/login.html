@@ -198,8 +198,8 @@ text-decoration:none;
 <form method="POST">
 {% csrf_token %}
 
-<label>Email Address / Mobile Number</label>
-<input type="text" name="identifier" required autocomplete="username">
+<label>Email Address or Mobile Number</label>
+<input type="text" name="identifier" placeholder="Enter your email or mobile number" required autocomplete="username">
 
 <label>Password</label>
 <input type="password" name="password" required>

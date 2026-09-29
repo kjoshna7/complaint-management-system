@@ -404,13 +404,37 @@ def profile(request):
 
     user = request.user
     profile_updated = False
+    profile_errors = []
+    form_username = user.username
+    form_email = user.email
 
-    # Edit profile (only username)
+    # Edit profile details
     if request.method == "POST":
-        username = request.POST.get("username")
+        form_username = request.POST.get("username", "").strip()
+        form_email = request.POST.get("email", "").strip().lower()
 
-        if username:
-            user.username = username
+        if not form_username:
+            profile_errors.append("Please enter a username.")
+        elif len(form_username) > 150:
+            profile_errors.append("Username must be 150 characters or fewer.")
+        elif User.objects.filter(username__iexact=form_username).exclude(pk=user.pk).exists():
+            profile_errors.append("That username is already in use.")
+
+        if not form_email:
+            profile_errors.append("Please enter an email address.")
+        else:
+            try:
+                validate_email(form_email)
+            except ValidationError:
+                profile_errors.append("Please enter a valid email address.")
+            if User.objects.filter(
+                Q(email__iexact=form_email) | Q(username__iexact=form_email)
+            ).exclude(pk=user.pk).exists():
+                profile_errors.append("An account with this email already exists.")
+
+        if not profile_errors:
+            user.username = form_username
+            user.email = form_email
             user.save()
             profile_updated = True
 
@@ -421,6 +445,9 @@ def profile(request):
         "user": user,
         "recent_complaints": recent_complaints,
         "profile_updated": profile_updated,
+        "profile_errors": profile_errors,
+        "form_username": form_username,
+        "form_email": form_email,
     }
 
     return render(request, "complaints/profile.html", context)

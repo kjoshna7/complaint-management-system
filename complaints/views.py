@@ -1,3 +1,5 @@
+import re
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -5,6 +7,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.contrib.auth.password_validation import validate_password
 from .models import Complaint
 from .models import Notification, UserProfile
 
@@ -21,24 +26,63 @@ def home(request):
 def register(request):
 
     if request.method == 'POST':
-
         full_name = request.POST.get('full_name', '').strip()
-        email = request.POST.get('email')
+        email = request.POST.get('email', '').strip().lower()
         mobile_number = request.POST.get('mobile_number', '').strip()
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
+        password = request.POST.get('password', '')
+        confirm_password = request.POST.get('confirm_password', '')
+        errors = []
 
-        if User.objects.filter(email__iexact=email).exists():
-            messages.error(request, "An account with this email already exists")
-            return redirect('register')
+        if not full_name:
+            errors.append('Please enter your full name.')
+        elif len(full_name) > 150:
+            errors.append('Your full name must be 150 characters or fewer.')
 
-        if UserProfile.objects.filter(mobile_number=mobile_number).exists():
-            messages.error(request, "An account with this mobile number already exists")
-            return redirect('register')
+        if not email:
+            errors.append('Please enter your email address.')
+        elif len(email) > 150:
+            errors.append('Your email address must be 150 characters or fewer.')
+        else:
+            try:
+                validate_email(email)
+            except ValidationError:
+                errors.append('Please enter a valid email address.')
+            if User.objects.filter(Q(email__iexact=email) | Q(username__iexact=email)).exists():
+                errors.append('An account with this email already exists.')
 
-        if password != confirm_password:
-            messages.error(request, "Passwords do not match")
-            return redirect('register')
+        mobile_digits = re.sub(r'\D', '', mobile_number)
+        if not mobile_number:
+            errors.append('Please enter your mobile number.')
+        elif not re.fullmatch(r'[0-9+() -]{10,20}', mobile_number) or not 10 <= len(mobile_digits) <= 15:
+            errors.append('Enter a valid mobile number with 10 to 15 digits.')
+        elif UserProfile.objects.filter(mobile_number=mobile_number).exists():
+            errors.append('An account with this mobile number already exists.')
+
+        if not password:
+            errors.append('Please enter a password.')
+        elif not confirm_password:
+            errors.append('Please confirm your password.')
+        elif password != confirm_password:
+            errors.append('Passwords do not match.')
+
+        if password:
+            try:
+                validate_password(
+                    password,
+                    user=User(username=email, first_name=full_name, email=email),
+                )
+            except ValidationError as error:
+                errors.extend(error.messages)
+
+        if errors:
+            return render(request, 'complaints/register.html', {
+                'errors': errors,
+                'form_data': {
+                    'full_name': full_name,
+                    'email': email,
+                    'mobile_number': mobile_number,
+                },
+            })
 
         user = User.objects.create_user(
             username=email,

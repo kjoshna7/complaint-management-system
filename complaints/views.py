@@ -2,7 +2,7 @@ import re
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -220,6 +220,7 @@ def submit_complaint(request):
 
         category = request.POST.get("category")
         other_category = request.POST.get("other_category")
+        title = request.POST.get("title", "").strip()
 
         if category == "Other" or not category:
             category = other_category
@@ -237,6 +238,7 @@ def submit_complaint(request):
 
         complaint = Complaint.objects.create(
             user=request.user,
+            title=title,
             category=category,
             description=description,
             state=state,
@@ -371,6 +373,10 @@ def update_status(request,id):
     if request.method == "POST":
 
         new_status = request.POST.get("status")
+        valid_statuses = dict(Complaint.STATUS_CHOICES)
+        if new_status not in valid_statuses:
+            return redirect('admin_dashboard')
+
         complaint.status = new_status
         complaint.save()
 

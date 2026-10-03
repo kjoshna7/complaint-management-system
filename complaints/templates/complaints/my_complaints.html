@@ -70,17 +70,17 @@
             font-weight: 600;
         }
 
-        .status.pending {
+        .status-pending {
             background: #fff3cd;
             color: #856404;
         }
 
-        .status.in\ progress {
+        .status-in-progress {
             background: #cce5ff;
             color: #004085;
         }
 
-        .status.resolved {
+        .status-resolved {
             background: #d4edda;
             color: #155724;
         }
@@ -165,7 +165,7 @@
                 <div class="complaint-header">
                     <h3>{{ complaint.category }}</h3>
 
-                    <span class="status {{ complaint.status|lower }}">
+                    <span class="status status-{{ complaint.status|slugify }}">
                         {{ complaint.status }}
                     </span>
                 </div>
@@ -197,7 +197,7 @@
 
                     <!-- View Complaint -->
                     <a href="{% url 'complaint_detail' complaint.id %}" class="btn-view">
-                        View
+                        View Details
                     </a>
 
                     <!-- Edit Complaint -->

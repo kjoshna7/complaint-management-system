@@ -4,7 +4,7 @@
 
 <style>
 .public-container .status-pending,
-.public-container .status-inprogress,
+.public-container .status-in-progress,
 .public-container .status-resolved {
 	display: inline-block;
 	padding: 4px 10px;
@@ -17,7 +17,7 @@
 	color: #b45309 !important;
 }
 
-.public-container .status-inprogress {
+.public-container .status-in-progress {
 	background: #dbeafe;
 	color: #1d4ed8 !important;
 }
@@ -47,7 +47,7 @@
 <p><strong>Location:</strong> {{ complaint.city }}, {{ complaint.state }}</p>
 
 <p><strong>Status:</strong>
-<span class="status-{{ complaint.status|lower|cut:' ' }}">
+<span class="status-{{ complaint.status|slugify }}">
 {{ complaint.status }}
 </span>
 </p>

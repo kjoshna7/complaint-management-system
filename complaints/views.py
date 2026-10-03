@@ -365,19 +365,27 @@ def admin_dashboard(request):
 # ---------------- UPDATE COMPLAINT STATUS ----------------
 
 @staff_member_required
+def update_status(request, id):
 
-def update_status(request,id):
-
-    complaint = get_object_or_404(Complaint,id=id)
+    complaint = get_object_or_404(Complaint, id=id)
 
     if request.method == "POST":
-
         new_status = request.POST.get("status")
+        new_priority = request.POST.get("priority") or complaint.priority
+        resolution_remarks = request.POST.get("resolution_remarks", "").strip()
+
         valid_statuses = dict(Complaint.STATUS_CHOICES)
+        valid_priorities = dict(Complaint.PRIORITY_CHOICES)
+
         if new_status not in valid_statuses:
             return redirect('admin_dashboard')
 
+        if new_priority not in valid_priorities:
+            new_priority = complaint.priority
+
         complaint.status = new_status
+        complaint.priority = new_priority
+        complaint.resolution_remarks = resolution_remarks
         complaint.save()
 
         Notification.objects.create(
@@ -386,9 +394,6 @@ def update_status(request,id):
         )
 
     return redirect('admin_dashboard')
-    return render(request, 'complaints/update_status.html', {
-        'complaint': complaint
-    })
 
 
 # ---------------- ADMIN REPORTS ----------------

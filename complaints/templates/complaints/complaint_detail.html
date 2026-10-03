@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -161,6 +161,13 @@ h2 {
 </span>
 </div>
 
+{% if complaint.resolution_remarks %}
+<div class="detail-row">
+<strong>Resolution Remarks:</strong>
+<span class="detail-value">{{ complaint.resolution_remarks }}</span>
+</div>
+{% endif %}
+
 {% if complaint.image %}
 <div class="detail-row">
 <strong>Image:</strong>
@@ -177,11 +184,11 @@ h2 {
 <div class="btn-group">
 
 <a href="{% url 'my_complaints' %}" class="btn btn-back">
-← Back to My Complaints
+â† Back to My Complaints
 </a>
 
 <a href="{% url 'edit_complaint' complaint.id %}" class="btn btn-edit">
-✏ Edit Complaint
+âœ Edit Complaint
 </a>
 
 </div>

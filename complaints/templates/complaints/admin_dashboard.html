@@ -1,5 +1,4 @@
-```html
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <title>Admin Dashboard</title>
@@ -15,8 +14,6 @@ padding:40px;
 h2{
 margin-bottom:25px;
 }
-
-/* Dashboard Cards */
 
 .dashboard-cards{
 display:flex;
@@ -46,8 +43,6 @@ font-size:18px;
 .card h2{
 margin-top:10px;
 }
-
-/* Search Bar */
 
 .search-box{
 margin-bottom:25px;
@@ -79,8 +74,6 @@ text-decoration:none;
 border-radius:5px;
 }
 
-/* Table */
-
 table{
 width:100%;
 border-collapse:collapse;
@@ -91,6 +84,7 @@ th, td{
 padding:12px;
 border-bottom:1px solid #ddd;
 text-align:left;
+vertical-align:top;
 }
 
 th{
@@ -105,12 +99,29 @@ color:white;
 font-size:12px;
 }
 
+.priority-badge{
+padding:5px 10px;
+border-radius:5px;
+font-size:12px;
+font-weight:bold;
+}
+
+.priority-low{background:#d4edda;color:#155724;}
+.priority-medium{background:#fff3cd;color:#856404;}
+.priority-high{background:#f8d7da;color:#721c24;}
+
 .pending{background:#ff9800;}
 .progress{background:#2196f3;}
 .resolved{background:#4CAF50;}
 
-select{
+select, textarea{
 padding:5px;
+}
+
+textarea{
+resize:vertical;
+min-height:60px;
+width:180px;
 }
 
 button{
@@ -128,8 +139,6 @@ cursor:pointer;
 <body>
 
 <h2>📋 Complaint Management</h2>
-
-<!-- Dashboard Statistics -->
 
 <div class="dashboard-cards">
 
@@ -160,8 +169,6 @@ cursor:pointer;
 <canvas id="complaintChart"></canvas>
 </div>
 
-<!-- Search Bar -->
-
 <form method="GET" class="search-box">
 
 <input 
@@ -177,16 +184,16 @@ value="{{ request.GET.search }}"
 
 </form>
 
-<!-- Complaint Table -->
-
 <table>
 
 <tr>
 <th>ID</th>
 <th>User</th>
 <th>Title</th>
+<th>Priority</th>
 <th>Status</th>
-<th>Update Status</th>
+<th>Resolution Remarks</th>
+<th>Update</th>
 </tr>
 
 {% for c in complaints %}
@@ -196,32 +203,52 @@ value="{{ request.GET.search }}"
 <td>{{ c.id }}</td>
 <td>{{ c.user.username }}</td>
 <td>{{ c.title }}</td>
-
+<td>
+    <span class="priority-badge
+        {% if c.priority == 'Low' %}priority-low
+        {% elif c.priority == 'Medium' %}priority-medium
+        {% elif c.priority == 'High' %}priority-high
+        {% endif %}">
+        {{ c.priority }}
+    </span>
+</td>
 <td>
 <span class="status
 {% if c.status == 'Pending' %}pending
 {% elif c.status == 'In Progress' %}progress
 {% elif c.status == 'Resolved' %}resolved
-{% endif %}
-">
+{% endif %}">
 {{ c.status }}
 </span>
 </td>
-
 <td>
-
+    {% if c.resolution_remarks %}
+        {{ c.resolution_remarks }}
+    {% else %}
+        —
+    {% endif %}
+</td>
+<td>
 <form action="{% url 'update_status' c.id %}" method="POST">
 {% csrf_token %}
 
-<select name="status">
+<div style="display:flex; flex-direction:column; gap:8px; min-width:200px;">
+    <select name="priority">
+        <option value="Low" {% if c.priority == 'Low' %}selected{% endif %}>Low</option>
+        <option value="Medium" {% if c.priority == 'Medium' %}selected{% endif %}>Medium</option>
+        <option value="High" {% if c.priority == 'High' %}selected{% endif %}>High</option>
+    </select>
 
-<option value="Pending">Pending</option>
-<option value="In Progress">In Progress</option>
-<option value="Resolved">Resolved</option>
+    <select name="status">
+        <option value="Pending" {% if c.status == 'Pending' %}selected{% endif %}>Pending</option>
+        <option value="In Progress" {% if c.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+        <option value="Resolved" {% if c.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+    </select>
 
-</select>
+    <textarea name="resolution_remarks" rows="2" placeholder="Add resolution remarks...">{{ c.resolution_remarks }}</textarea>
 
-<button type="submit">Update</button>
+    <button type="submit">Update</button>
+</div>
 
 </form>
 
@@ -271,4 +298,3 @@ beginAtZero:true
 </script>
 </body>
 </html>
-

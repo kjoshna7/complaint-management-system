@@ -267,6 +267,10 @@ def complaint_detail(request, complaint_id):
 
     complaint = get_object_or_404(Complaint, id=complaint_id)
 
+    if complaint.user != request.user:
+        messages.error(request, "You are not allowed to view this complaint.")
+        return redirect('my_complaints')
+
     return render(request, 'complaints/complaint_detail.html', {
         'complaint': complaint
     })

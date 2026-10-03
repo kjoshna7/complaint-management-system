@@ -17,6 +17,16 @@ body {
     margin:0;
 }
 
+.status-pending,
+.status-in-progress,
+.status-resolved {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
 .container {
     max-width:800px;
     margin:70px auto;
@@ -75,7 +85,7 @@ h2 {
     color:#856404;
 }
 
-.status-inprogress {
+.status-in-progress {
     background:#cce5ff;
     color:#004085;
 }
@@ -156,7 +166,7 @@ h2 {
 
 <div class="detail-row">
 <strong>Status:</strong>
-<span class="badge status-{{ complaint.status|lower|cut:' ' }}">
+<span class="badge status-{{ complaint.status|slugify }}">
 {{ complaint.status }}
 </span>
 </div>
@@ -184,11 +194,11 @@ h2 {
 <div class="btn-group">
 
 <a href="{% url 'my_complaints' %}" class="btn btn-back">
-â† Back to My Complaints
+← Back to My Complaints
 </a>
 
 <a href="{% url 'edit_complaint' complaint.id %}" class="btn btn-edit">
-âœ Edit Complaint
+✓ Edit Complaint
 </a>
 
 </div>

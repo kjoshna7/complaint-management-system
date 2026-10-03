@@ -66,6 +66,9 @@ class Complaint(models.Model):
         db_index=True
     )
 
+    # Resolution details
+    resolution_remarks = models.TextField(blank=True, default='')
+
     # User who submitted complaint
     user = models.ForeignKey(
         User,

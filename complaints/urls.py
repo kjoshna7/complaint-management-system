@@ -34,13 +34,13 @@ urlpatterns = [
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('update-status/<int:id>/', views.update_status, name='update_status'),
     path('reports/', views.reports, name='reports'),
-path('profile/', views.profile, name='profile'),
+    path('profile/', views.profile, name='profile'),
     # Forgot password
     path('forgot-password/', views.forgot_password, name='forgot_password'),
-        path('notifications/', views.user_notifications, name='notifications'),
-path(
-    'notifications/read/<int:pk>/',
-    views.mark_notification_read,
-    name='mark_notification_read'
-),
+    path('notifications/', views.notifications, name='notifications'),
+    path(
+        'notifications/read/<int:pk>/',
+        views.mark_notification_read,
+        name='mark_notification_read'
+    ),
 ]

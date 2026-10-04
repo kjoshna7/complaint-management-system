@@ -337,7 +337,20 @@ def delete_complaint(request, complaint_id):
 @staff_member_required
 def admin_dashboard(request):
 
+    search_query = request.GET.get('search', '').strip()
     complaints = Complaint.objects.select_related('user', 'assigned_to').all().order_by('-created_at')
+
+    if search_query:
+        complaints = complaints.filter(
+            Q(title__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(category__icontains=search_query) |
+            Q(city__icontains=search_query) |
+            Q(state__icontains=search_query) |
+            Q(user__username__icontains=search_query) |
+            Q(resolution_remarks__icontains=search_query)
+        )
+
     staff_users = User.objects.filter(is_staff=True).order_by('username')
 
     total = complaints.count()
@@ -364,6 +377,7 @@ def admin_dashboard(request):
         'resolved': resolved,
         'categories': categories,
         'category_counts': category_counts,
+        'search_query': search_query,
     }
 
     return render(request, 'complaints/admin_dashboard.html', context)
@@ -484,9 +498,7 @@ def profile(request):
 
 @login_required
 def user_notifications(request):
-    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
-    return render(request, 'notifications.html', {'notifications': notifications})
-
+    return notifications(request)
 
 
 def notification_count(request):
@@ -495,23 +507,18 @@ def notification_count(request):
         return {'notification_count': count}
     return {'notification_count': 0}
 
+
 @login_required
 def notifications(request):
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
 
-# Get user notifications
-    notifications = Notification.objects.filter(
-        user=request.user
-    ).order_by('-created_at')
+    Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
 
-# Mark them as read
-    Notification.objects.filter(
-        user=request.user,
-        is_read=False
-    ).update(is_read=True)
+    return render(request, 'notifications.html', {
+        'notifications': notifications,
+    })
 
-    return render(request, "complaints/notifications.html", {
-        "notifications": notifications
-})
+
 @login_required
 def mark_notification_read(request, pk):
     notification = get_object_or_404(Notification, pk=pk)

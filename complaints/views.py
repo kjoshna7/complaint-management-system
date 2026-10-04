@@ -337,7 +337,8 @@ def delete_complaint(request, complaint_id):
 @staff_member_required
 def admin_dashboard(request):
 
-    complaints = Complaint.objects.all()
+    complaints = Complaint.objects.select_related('user', 'assigned_to').all().order_by('-created_at')
+    staff_users = User.objects.filter(is_staff=True).order_by('username')
 
     total = complaints.count()
     pending = complaints.filter(status='Pending').count()
@@ -356,6 +357,7 @@ def admin_dashboard(request):
 
     context = {
         'complaints': complaints,
+        'staff_users': staff_users,
         'total': total,
         'pending': pending,
         'progress': progress,
@@ -377,6 +379,7 @@ def update_status(request, id):
         new_status = request.POST.get("status")
         new_priority = request.POST.get("priority") or complaint.priority
         resolution_remarks = request.POST.get("resolution_remarks", "").strip()
+        assigned_to_id = request.POST.get("assigned_to")
 
         valid_statuses = dict(Complaint.STATUS_CHOICES)
         valid_priorities = dict(Complaint.PRIORITY_CHOICES)
@@ -390,12 +393,24 @@ def update_status(request, id):
         complaint.status = new_status
         complaint.priority = new_priority
         complaint.resolution_remarks = resolution_remarks
+
+        if assigned_to_id:
+            complaint.assigned_to = User.objects.filter(pk=assigned_to_id, is_staff=True).first()
+        else:
+            complaint.assigned_to = None
+
         complaint.save()
 
         Notification.objects.create(
             user=complaint.user,
             message=f"Your complaint '{complaint.title}' status updated to {new_status}"
         )
+
+        if complaint.assigned_to and complaint.assigned_to != complaint.user:
+            Notification.objects.create(
+                user=complaint.assigned_to,
+                message=f"You have been assigned complaint '{complaint.title}'"
+            )
 
     return redirect('admin_dashboard')
 

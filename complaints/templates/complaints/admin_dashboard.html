@@ -190,6 +190,7 @@ value="{{ request.GET.search }}"
 <th>ID</th>
 <th>User</th>
 <th>Title</th>
+<th>Assigned To</th>
 <th>Priority</th>
 <th>Status</th>
 <th>Resolution Remarks</th>
@@ -203,6 +204,13 @@ value="{{ request.GET.search }}"
 <td>{{ c.id }}</td>
 <td>{{ c.user.username }}</td>
 <td>{{ c.title }}</td>
+<td>
+    {% if c.assigned_to %}
+        {{ c.assigned_to.get_full_name|default:c.assigned_to.username }}
+    {% else %}
+        Unassigned
+    {% endif %}
+</td>
 <td>
     <span class="priority-badge
         {% if c.priority == 'Low' %}priority-low
@@ -232,7 +240,14 @@ value="{{ request.GET.search }}"
 <form action="{% url 'update_status' c.id %}" method="POST">
 {% csrf_token %}
 
-<div style="display:flex; flex-direction:column; gap:8px; min-width:200px;">
+<div style="display:flex; flex-direction:column; gap:8px; min-width:220px;">
+    <select name="assigned_to">
+        <option value="">Unassigned</option>
+        {% for staff in staff_users %}
+            <option value="{{ staff.id }}" {% if c.assigned_to_id == staff.id %}selected{% endif %}>{{ staff.get_full_name|default:staff.username }}</option>
+        {% endfor %}
+    </select>
+
     <select name="priority">
         <option value="Low" {% if c.priority == 'Low' %}selected{% endif %}>Low</option>
         <option value="Medium" {% if c.priority == 'Medium' %}selected{% endif %}>Medium</option>

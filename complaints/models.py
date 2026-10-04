@@ -76,6 +76,16 @@ class Complaint(models.Model):
         related_name='complaints'
     )
 
+    # Staff member assigned to resolve the complaint
+    assigned_to = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name='assigned_complaints',
+        null=True,
+        blank=True,
+        default=None,
+    )
+
     # Timestamp Fields
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
